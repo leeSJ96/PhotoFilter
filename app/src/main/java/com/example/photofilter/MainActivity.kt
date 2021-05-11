@@ -1,6 +1,8 @@
 package com.example.photofilter
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -13,6 +15,11 @@ import com.example.photofilter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    companion object{
+        private const val REQUEST_CODE_PICK_IMAGE = 1
+        const val KEY_IMAGE_URI = "imageUri"
+    }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
@@ -21,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setListeners()
 
 //        setSupportActionBar(binding.toolbar)
 
@@ -33,6 +41,34 @@ class MainActivity : AppCompatActivity() {
 //                .setAction("Action", null).show()
 //        }
     }
+
+
+
+    private fun setListeners() {
+        binding.buttonEditNewImage.setOnClickListener {
+            Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
+                     it.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
+            }
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK)
+            data?.data?.let {imageUri ->
+                Intent(applicationContext, EditImageActivity::class.java).also {
+                    it.putExtra(KEY_IMAGE_URI, imageUri)
+                    startActivity(it)
+                }
+            }
+
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
