@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditImageActivity"
+    tools:context=".activites.editimage.EditImageActivity"
     android:animateLayoutChanges="true"
     >
     <LinearLayout
@@ -47,6 +47,17 @@
 
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/previewProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview"
+        app:layout_constraintEnd_toEndOf="@id/imagePreview"
+        app:layout_constraintStart_toStartOf="@id/imagePreview"
+        app:layout_constraintTop_toTopOf="@id/imagePreview"
+
+        />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imagePreview"

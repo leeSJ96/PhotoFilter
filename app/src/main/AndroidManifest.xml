@@ -3,15 +3,17 @@
     package="com.example.photofilter">
 
     <application
+        android:name=".utilities.AppConfig"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoFilter">
-        <activity android:name=".EditImageActivity"></activity>
+
+        <activity android:name=".activites.editimage.EditImageActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activites.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/FullScreen">
             <intent-filter>
