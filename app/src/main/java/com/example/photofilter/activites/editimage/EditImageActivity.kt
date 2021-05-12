@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.photofilter.activites.main.MainActivity
+import com.example.photofilter.adapters.ImageFiltersAdapter
 import com.example.photofilter.databinding.ActivityEditImageBinding
 import com.example.photofilter.utilities.disPlayToast
 import com.example.photofilter.utilities.show
@@ -35,12 +36,29 @@ class EditImageActivity : AppCompatActivity() {
                 if (dataState.isLoading) View.VISIBLE else View.GONE
             dataState.bitmap?.let{ bitmap ->
                 binding.imagePreview.setImageBitmap(bitmap)
-            binding.imagePreview.show()}
+            binding.imagePreview.show()
+                viewModel.loadImageFilters(bitmap)
+            }
+
                 ?: kotlin.run{
                     dataState.error?.let { error ->
                         disPlayToast(error)
                     }
                 }
+        })
+        viewModel.imageFiltersUistate.observe(this,{
+            val imageFiltersDataState = it?: return@observe
+            binding.imageFiltersProgressBar.visibility =
+                if (imageFiltersDataState.isLoading) View.VISIBLE else View.GONE
+            imageFiltersDataState.imageFilters?.let { imagefilters ->
+                ImageFiltersAdapter(imagefilters).also { adapter ->
+                    binding.filtersRecyclerView.adapter = adapter
+                }
+            } ?: kotlin.run{
+                imageFiltersDataState.error?.let { error->
+                    disPlayToast(error)
+                }
+            }
         })
     }
 
