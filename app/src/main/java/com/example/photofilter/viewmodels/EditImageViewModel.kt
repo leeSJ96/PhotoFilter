@@ -59,7 +59,7 @@ class EditImageViewModel(private val editImageRepository: EditImageRepository) :
         Coroutines.io {
             runCatching {
                 emitImageFiltersUiState(isLoading = true)
-                editImageRepository.getImagefilters(getPreviewImage(originalImage))
+                editImageRepository.getImageFilters(getPreviewImage(originalImage))
             }.onSuccess { imageFilters ->
                 emitImageFiltersUiState(imageFilters = imageFilters)
             }.onFailure {
@@ -96,5 +96,45 @@ class EditImageViewModel(private val editImageRepository: EditImageRepository) :
 
 
     //endregion
+
+    //region:: 필터 이미지 저장소
+    private val saveFilteredImageDataState = MutableLiveData<SaveFilteredImageDataState>()
+    val saveFiltedImageUiState : LiveData<SaveFilteredImageDataState> get()=  saveFilteredImageDataState
+
+    fun saveFilteredImage(filteredBitmap: Bitmap){
+        Coroutines.io{
+            kotlin.runCatching {
+                emitSaveFilteredImageUiState(isLoading = true)
+                editImageRepository.saveFilteredImage(filteredBitmap)
+
+            }.onSuccess { saveImageUri ->
+                emitSaveFilteredImageUiState(uri = saveImageUri)
+
+            }.onFailure{
+                emitSaveFilteredImageUiState(error = it.message.toString())
+            }
+        }
+    }
+
+
+    private fun emitSaveFilteredImageUiState(
+
+        isLoading: Boolean = false,
+        uri: Uri? = null,
+        error: String? = null
+    ){
+        val dataState = SaveFilteredImageDataState(isLoading, uri , error)
+        saveFilteredImageDataState.postValue(dataState)
+    }
+
+
+        data class  SaveFilteredImageDataState(
+        val isLoading: Boolean,
+        val uri: Uri?,
+        val error:String?
+        )
+
+    //ㄷ욱ㄷ햐ㅐㅜ
+
 
 }

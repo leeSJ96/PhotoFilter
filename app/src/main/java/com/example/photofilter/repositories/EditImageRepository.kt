@@ -6,6 +6,7 @@ import com.example.photofilter.data.ImageFilter
 
 interface EditImageRepository {
     suspend fun prepareImagePreview(imageUri: Uri): Bitmap?
-    suspend fun getImagefilters(image:Bitmap): List<ImageFilter>
+    suspend fun getImageFilters(image:Bitmap): List<ImageFilter>
+    suspend fun saveFilteredImage(filteredBitmap: Bitmap):Uri?
 
 }
