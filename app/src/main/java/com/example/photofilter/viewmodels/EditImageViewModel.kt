@@ -99,11 +99,11 @@ class EditImageViewModel(private val editImageRepository: EditImageRepository) :
 
     //region:: 필터 이미지 저장소
     private val saveFilteredImageDataState = MutableLiveData<SaveFilteredImageDataState>()
-    val saveFiltedImageUiState : LiveData<SaveFilteredImageDataState> get()=  saveFilteredImageDataState
+    val saveFilteredImageUiState : LiveData<SaveFilteredImageDataState> get()=  saveFilteredImageDataState
 
     fun saveFilteredImage(filteredBitmap: Bitmap){
         Coroutines.io{
-            kotlin.runCatching {
+            runCatching {
                 emitSaveFilteredImageUiState(isLoading = true)
                 editImageRepository.saveFilteredImage(filteredBitmap)
 

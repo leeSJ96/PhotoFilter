@@ -1,12 +1,15 @@
 package com.example.photofilter.activites.editimage
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.example.photofilter.activites.filteredimage.FilteredImageActivity
 import com.example.photofilter.activites.main.MainActivity
 import com.example.photofilter.adapters.ImageFiltersAdapter
 import com.example.photofilter.data.ImageFilter
@@ -20,6 +23,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditImageActivity : AppCompatActivity() , ImageFilterListener {
 
+    companion object{
+        const val KEY_FILTERED_IMAGE_URI = "filteredImageUri"
+    }
+
+    private val TAG = "로그"
 
 
     private lateinit var binding: ActivityEditImageBinding
@@ -55,10 +63,7 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
                     binding.imagePreview.show()
                     viewModel.loadImageFilters(this)
                 }
-
-
             }
-
                 ?: kotlin.run{
                     dataState.error?.let { error ->
                         disPlayToast(error)
@@ -82,6 +87,32 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
         filteredBitmap.observe(this, {bitmap ->
             binding.imagePreview.setImageBitmap(bitmap)
         })
+        viewModel.saveFilteredImageUiState.observe(this,{
+            val saveFilteredImageDataState = it?: return@observe
+            if (saveFilteredImageDataState.isLoading){
+                binding.imageSave.visibility = View.GONE
+                binding.savingProgressBar.visibility = View.VISIBLE
+            } else{
+                binding.savingProgressBar.visibility = View.GONE
+                binding.imageSave.visibility = View.VISIBLE
+            }
+            saveFilteredImageDataState.uri?.let { savedImageUri ->
+                Intent(
+                    applicationContext,
+                   FilteredImageActivity::class.java
+
+                ).also { filteredImageIntent ->
+                    filteredImageIntent.putExtra(KEY_FILTERED_IMAGE_URI, savedImageUri)
+                    startActivity(filteredImageIntent)
+
+                }
+            } ?: kotlin.run {
+                saveFilteredImageDataState.error?.let { error ->
+                    disPlayToast(error)
+
+                }
+            }
+        })
     }
 
     private fun prepareImagePreview(){
@@ -92,19 +123,15 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
     }
 
 
-    private fun displayImagePreview(){
-        intent.getParcelableExtra<Uri>(MainActivity.KEY_IMAGE_URI)?.let {
-            val inputStream = contentResolver.openInputStream(it)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            binding.imagePreview.setImageBitmap(bitmap)
-            binding.imagePreview.visibility = View.VISIBLE
-
-        }
-    }
-
     private fun setListeners() {
         binding.imageBack.setOnClickListener {
             onBackPressed()
+        }
+        binding.imageSave.setOnClickListener {
+            filteredBitmap.value?.let { bitmap ->
+                viewModel.saveFilteredImage(bitmap)
+                Log.d(TAG, "확인")
+            }
         }
 
         binding.imagePreview.setOnLongClickListener {

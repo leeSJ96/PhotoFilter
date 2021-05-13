@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoFilter">
-        <activity android:name=".activites.filteredimage.FilteredImageActivity"></activity>
+        <activity android:name=".activites.filteredimage.FilteredImageActivity" />
         <activity android:name=".activites.editimage.EditImageActivity" />
         <activity
             android:name=".activites.main.MainActivity"
