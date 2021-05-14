@@ -1,8 +1,8 @@
 package com.example.photofilter.activites.editimage
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -101,7 +101,15 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
             saveFilteredImageDataState.uri?.let { savedImageUri ->
                 Intent(applicationContext, FilteredImageActivity::class.java).also { filteredImageIntent ->
                     filteredImageIntent.putExtra(KEY_FILTERED_IMAGE_URI, savedImageUri)
-                    startActivity(filteredImageIntent)
+
+
+                    val options : ActivityOptions = ActivityOptions.makeSceneTransitionAnimation(
+                        this,binding.imageSave,"imageTransition"
+                    )
+                    startActivity(filteredImageIntent,options.toBundle())
+
+
+//                    startActivity(filteredImageIntent)
                     Log.d(TAG, " check2:${savedImageUri} ")
                 }
             } ?: kotlin.run {
