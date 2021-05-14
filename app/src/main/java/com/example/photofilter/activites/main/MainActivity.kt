@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.photofilter.R
 import com.example.photofilter.activites.editimage.EditImageActivity
+import com.example.photofilter.activites.savedimages.SavedImagesActivity
 import com.example.photofilter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -53,6 +54,11 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
             }
 
+        }
+        binding.buttonViewSavedImages.setOnClickListener {
+            Intent(applicationContext, SavedImagesActivity::class.java).also {
+                startActivity(it)
+            }
         }
     }
 

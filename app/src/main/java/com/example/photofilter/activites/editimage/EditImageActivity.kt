@@ -72,10 +72,11 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
         })
         viewModel.imageFiltersUistate.observe(this,{
             val imageFiltersDataState = it?: return@observe
+            Log.d(TAG, "체크3:${imageFiltersDataState} ")
             binding.imageFiltersProgressBar.visibility =
                 if (imageFiltersDataState.isLoading) View.VISIBLE else View.GONE
-            imageFiltersDataState.imageFilters?.let { imagefilters ->
-                ImageFiltersAdapter(imagefilters, this).also { adapter ->
+            imageFiltersDataState.imageFilters?.let { imageFilters ->
+                ImageFiltersAdapter(imageFilters, this).also { adapter ->
                     binding.filtersRecyclerView.adapter = adapter
                 }
             } ?: kotlin.run{
@@ -88,7 +89,8 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
             binding.imagePreview.setImageBitmap(bitmap)
         })
         viewModel.saveFilteredImageUiState.observe(this,{
-            val saveFilteredImageDataState = it?: return@observe
+            val saveFilteredImageDataState = it ?: return@observe
+            Log.d(TAG, " check:${saveFilteredImageDataState} ")
             if (saveFilteredImageDataState.isLoading){
                 binding.imageSave.visibility = View.GONE
                 binding.savingProgressBar.visibility = View.VISIBLE
@@ -97,14 +99,10 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
                 binding.imageSave.visibility = View.VISIBLE
             }
             saveFilteredImageDataState.uri?.let { savedImageUri ->
-                Intent(
-                    applicationContext,
-                   FilteredImageActivity::class.java
-
-                ).also { filteredImageIntent ->
+                Intent(applicationContext, FilteredImageActivity::class.java).also { filteredImageIntent ->
                     filteredImageIntent.putExtra(KEY_FILTERED_IMAGE_URI, savedImageUri)
                     startActivity(filteredImageIntent)
-
+                    Log.d(TAG, " check2:${savedImageUri} ")
                 }
             } ?: kotlin.run {
                 saveFilteredImageDataState.error?.let { error ->
@@ -137,6 +135,9 @@ class EditImageActivity : AppCompatActivity() , ImageFilterListener {
         binding.imagePreview.setOnLongClickListener {
             binding.imagePreview.setImageBitmap(originalBitmap)
             return@setOnLongClickListener false
+        }
+        binding.imagePreview.setOnClickListener {
+            binding.imagePreview.setImageBitmap(filteredBitmap.value)
         }
 
 

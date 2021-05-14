@@ -13,4 +13,5 @@
     <string name="let_s_create_something_new">나만의 색을 입혀봐!</string>
     <string name="image_filters">이미지 필터</string>
     <string name="apply_filter">사진필터</string>
+    <string name="saved_images">이미지 갤러리</string>
 </resources>

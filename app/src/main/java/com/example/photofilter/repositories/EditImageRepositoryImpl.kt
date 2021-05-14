@@ -40,7 +40,7 @@ class EditImageRepositoryImpl(private val context: Context): EditImageRepository
             saveFile(file,filteredBitmap)
             FileProvider.getUriForFile(context, "${context.packageName}.provider",file)
 
-        }catch (exception: Exception){
+        } catch (exception: Exception){
             null
         }
 
