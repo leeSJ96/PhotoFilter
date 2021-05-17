@@ -10,7 +10,9 @@
 MVVM패턴,코루틴,GPU라이브러리,koin,viewModel
 
    
-![ezgif com-gif-maker (2)](https://im7.ezgif.com/tmp/ezgif-7-6f4ca601d153.gif)
+   
+   # [part 1]   
+![ezgif com-gif-maker (2)](https://im7.ezgif.com/tmp/ezgif-7-e905edd5cade.gif)
 
 
 
