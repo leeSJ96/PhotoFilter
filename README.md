@@ -14,7 +14,7 @@ MVVM패턴,코루틴,GPU라이브러리,koin,viewModel
    
    # [part 1] 
    
-* 유튜브 포트폴리오 <https://youtu.be/0pU1JdHvN4c>   
+* 유튜브 포트폴리오 <https://youtu.be/x-kThMRb0Ws>   
 
 
 
